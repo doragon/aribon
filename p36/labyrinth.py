@@ -81,6 +81,10 @@ def get_step_count(num_list, n, m):
     si, sj = get_position(-2, num_list)
     gi, gj = get_position(-3, num_list)
 
+    # start, goalが隣合う場合はカウント1で終了
+    if si == gi or sj == gj:
+        return 1
+
     step_count = 0
     index_list = []
     while True:
