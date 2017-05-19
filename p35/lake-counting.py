@@ -6,60 +6,52 @@
 # ---------------------------------------------------------
 
 
-def getLakeListConvertToIndexList(lakeList):
+def get_lake_list_convert_to_index_list(lake_list):
     """ 池の範囲をindex化したリストで返す """
-    res = []
-    for i in range(len(lakeList)):
-        if lakeList[i] == 'W':
-            if i not in res:
-                res.append(i)
-    res.sort()
-    return res
+    return [i for i, x in enumerate(lake_list) if x == 'W']
 
 
-def getLakeCounting(indexList, preList):
+def get_lake_counting(index_list, pre_list):
     """
         池のカウント数を返す。
-        ただし、前左右で隣り合ったindexがない場合に限る。
+        ただし、左上,上,右上,左に隣り合ったindexがない場合に限る。
     """
-    count = 0
     # 1行目
-    if len(preList) == 0:
-        for i in indexList:
-            if i - 1 in indexList:
-                continue
-            count = count + 1
-        return count
+    if len(pre_list) == 0:
+        return len([i for i in index_list if i - 1 not in index_list])
 
     # 2行目以降
-    for i in indexList:
-        if (i - 1 in preList) or i in preList or (i + 1 in preList):
+    count = 0
+    for i in index_list:
+        # 前の配列にて、左上,上,右上に池があるか確認
+        if (i - 1 in pre_list) or i in pre_list or (i + 1 in pre_list):
             continue
-        if i - 1 in indexList:
+        # 今の配列にて、左に池があるか確認
+        if i - 1 in index_list:
             continue
         count = count + 1
     return count
 
 
 if __name__ == '__main__':
-    n = 10
-    m = 12
-    input = []
-    input.append(['W', '', '', '', '', '', '', '', '', 'W', 'W', ''])
-    input.append(['', 'W', 'W', 'W', '', '', '', '', '', 'W', 'W', 'W'])
-    input.append(['', '', '', '', 'W', 'W', '', '', '', 'W', 'W', ''])
-    input.append(['', '', '', '', '', '', '', '', '', 'W', 'W', ''])
-    input.append(['', '', '', '', '', '', '', '', '', 'W', '', ''])
-    input.append(['', '', 'W', '', '', '', '', '', '', 'W', '', ''])
-    input.append(['', 'W', '', 'W', '', '', '', '', '', 'W', 'W', ''])
-    input.append(['W', '', 'W', '', 'W', '', '', '', '', '', 'W', ''])
-    input.append(['', 'W', '', 'W', '', '', '', '', '', '', 'W', ''])
-    input.append(['', '', 'W', '', '', '', '', '', '', '', 'W', ''])
+    # n = 10
+    # m = 12
+    INPUT = []
+    INPUT.append(['W', '', '', '', '', '', '', '', '', 'W', 'W', ''])
+    INPUT.append(['', 'W', 'W', 'W', '', '', '', '', '', 'W', 'W', 'W'])
+    INPUT.append(['', '', '', '', 'W', 'W', '', '', '', 'W', 'W', ''])
+    INPUT.append(['', '', '', '', '', '', '', '', '', 'W', 'W', ''])
+    INPUT.append(['', '', '', '', '', '', '', '', '', 'W', '', ''])
+    INPUT.append(['', '', 'W', '', '', '', '', '', '', 'W', '', ''])
+    INPUT.append(['', 'W', '', 'W', '', '', '', '', '', 'W', 'W', ''])
+    INPUT.append(['W', '', 'W', '', 'W', '', '', '', '', '', 'W', ''])
+    INPUT.append(['', 'W', '', 'W', '', '', '', '', '', '', 'W', ''])
+    INPUT.append(['', '', 'W', '', '', '', '', '', '', '', 'W', ''])
 
-    count = 0
-    preList = []
-    for lakes in input:
-        indexList = getLakeListConvertToIndexList(lakes)
-        count = count + getLakeCounting(indexList, preList)
-        preList = indexList
-    print(count)
+    COUNT = 0
+    PRE_LIST = []
+    for lakes in INPUT:
+        index_list = get_lake_list_convert_to_index_list(lakes)
+        COUNT = COUNT + get_lake_counting(index_list, PRE_LIST)
+        PRE_LIST = index_list
+    print(COUNT)
