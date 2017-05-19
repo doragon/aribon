@@ -86,14 +86,10 @@ def get_step_count(num_list, n, m):
         return 1
 
     step_count = 0
-    index_list = []
+    index_list = [[si, sj]]
     while True:
-        if step_count == 0:
-            index_list = get_index_in_all_directions([[si, sj]], num_list,
-                                                     step_count, n, m)
-        else:
-            index_list = get_index_in_all_directions(index_list, num_list,
-                                                     step_count, n, m)
+        index_list = get_index_in_all_directions(index_list, num_list,
+                                                 step_count, n, m)
         step_count = step_count + 1
         if len(index_list) == 0 or is_next_step_goal(index_list, gi, gj):
             break
