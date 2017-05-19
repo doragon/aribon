@@ -9,14 +9,10 @@
 def getLakeListConvertToIndexList(lakeList):
     """ 池の範囲をindex化したリストで返す """
     res = []
-    for i, j in enumerate(lakeList):
-        if j == 'W':
+    for i in range(len(lakeList)):
+        if lakeList[i] == 'W':
             if i not in res:
                 res.append(i)
-            if (i != 0) and (i - 1 not in res):
-                res.append(i - 1)
-            if i + 1 < len(lakeList):
-                res.append(i + 1)
     res.sort()
     return res
 
