@@ -16,9 +16,11 @@ def is_front_small_character_code(arg):
 
 
 if __name__ == '__main__':
-    N = 6
-    S = 'ACDBCB'
     T = ''
+    # N = 6
+    # S = 'ACDBCB'
+    N = 11
+    S = 'AACDEAEDBAA'
 
     print(S)
     for i in range(N):
@@ -26,6 +28,6 @@ if __name__ == '__main__':
             T = T + S[0]
             S = S[1:]
         else:
-            T = T + S[len(S) - 1]
-            S = S[0:len(S) - 1]
+            T = T + S[-1]
+            S = S[0:-1]
     print(T)
