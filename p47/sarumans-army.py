@@ -6,7 +6,7 @@
 # ---------------------------------------------------------
 
 
-def get_new_index(basic_range, index, x_list):
+def get_new_index(basic_range, x_list, index):
     """
         次の基点となるindexを取得する
     """
@@ -35,7 +35,7 @@ def get_number_of_reference_point(basic_range, x_list):
             continue
         # 基点からの範囲を超えた場合
         if x > x_list[index] + basic_range:
-            index = get_new_index(basic_range, i, x_list)
+            index = get_new_index(basic_range, x_list, i)
             count += 1
     return count
 
