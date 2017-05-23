@@ -39,6 +39,14 @@ def get_position(target_num, num_list):
     return -1, -1
 
 
+def is_unsearched(position):
+    return position == 0
+
+
+def is_goal(position):
+    return position == -3
+
+
 def get_index_in_all_directions(target_list, num_list, count, n, m):
     """
         対象位置から前後左右の有効なindex位置を返す
@@ -46,20 +54,19 @@ def get_index_in_all_directions(target_list, num_list, count, n, m):
     """
     res = []
     for target in target_list:
-        i = target[0]
-        j = target[1]
-        if i - 1 >= 0 and num_list[i - 1][j] == 0:
-            num_list[i - 1][j] = count + 1
-            res.append([i - 1, j])
-        if j - 1 >= 0 and num_list[i][j - 1] == 0:
-            num_list[i][j - 1] = count + 1
-            res.append([i, j - 1])
-        if i + 1 < n and num_list[i + 1][j] == 0:
-            num_list[i + 1][j] = count + 1
-            res.append([i + 1, j])
-        if j + 1 < m and num_list[i][j + 1] == 0:
-            num_list[i][j + 1] = count + 1
-            res.append([i, j + 1])
+        index_i = target[0]
+        index_j = target[1]
+        for i, j in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            index_i = target[0] + i
+            index_j = target[1] + j
+            if index_i < 0 or index_i >= n or index_j < 0 or index_j >= m:
+                continue
+            if is_unsearched(num_list[index_i][index_j]):
+                num_list[index_i][index_j] = count + 1
+                res.append([index_i, index_j])
+            if is_goal(num_list[index_i][index_j]):
+                res.append([index_i, index_j])
+                return res
     return res
 
 
@@ -81,10 +88,6 @@ def get_step_count(num_list, n, m):
     si, sj = get_position(-2, num_list)
     gi, gj = get_position(-3, num_list)
 
-    # start, goalが隣合う場合はカウント1で終了
-    if si == gi or sj == gj:
-        return 1
-
     step_count = 0
     index_list = [[si, sj]]
     while True:
@@ -105,25 +108,34 @@ def print_labyrinth(num_list):
 
 
 if __name__ == '__main__':
-    n = 10
-    m = 10
-    input = []
-    input.append(['#', 'S', '#', '#', '#', '#', '#', '#', '', '#'])
-    input.append(['', '', '', '', '', '', '#', '', '', '#'])
-    input.append(['', '#', '', '#', '#', '', '#', '#', '', '#'])
-    input.append(['', '#', '', '', '', '', '', '', '', ''])
-    input.append(['#', '#', '', '#', '#', '', '#', '#', '#', '#'])
-    input.append(['', '', '', '', '#', '', '', '', '', '#'])
-    input.append(['', '#', '#', '#', '#', '#', '#', '#', '', '#'])
-    input.append(['', '', '', '', '#', '', '', '', '', ''])
-    input.append(['', '#', '#', '#', '#', '', '#', '#', '#', ''])
-    input.append(['', '', '', '', '#', '', '', '', 'G', '#'])
+    # test case1
+    N = 10
+    M = 10
+    INPUT = []
+    INPUT.append(['#', 'S', '#', '#', '#', '#', '#', '#', '', '#'])
+    INPUT.append(['', '', '', '', '', '', '#', '', '', '#'])
+    INPUT.append(['', '#', '', '#', '#', '', '#', '#', '', '#'])
+    INPUT.append(['', '#', '', '', '', '', '', '', '', ''])
+    INPUT.append(['#', '#', '', '#', '#', '', '#', '#', '#', '#'])
+    INPUT.append(['', '', '', '', '#', '', '', '', '', '#'])
+    INPUT.append(['', '#', '#', '#', '#', '#', '#', '#', '', '#'])
+    INPUT.append(['', '', '', '', '#', '', '', '', '', ''])
+    INPUT.append(['', '#', '#', '#', '#', '', '#', '#', '#', ''])
+    INPUT.append(['', '', '', '', '#', '', '', '', 'G', '#'])
 
-    num_list = get_input_list_convert_to_num_list(input)
+    # test case2
+    # N = 3
+    # M = 3
+    # INPUT = []
+    # INPUT.append(['S', '', ''])
+    # INPUT.append(['', '#', ''])
+    # INPUT.append(['G', '#', '#'])
+
+    num_list = get_input_list_convert_to_num_list(INPUT)
     print('=== Before ===')
     print_labyrinth(num_list)
 
-    step_count = get_step_count(num_list, n, m)
+    step_count = get_step_count(num_list, N, M)
     print('=== After ===')
     print_labyrinth(num_list)
 
