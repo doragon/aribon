@@ -45,5 +45,4 @@ if __name__ == '__main__':
     R = 10
     X = [1, 7, 15, 20, 30, 50]
 
-    sorted(X)
-    print(get_number_of_reference_point(R, X))
+    print(get_number_of_reference_point(R, sorted(X)))
